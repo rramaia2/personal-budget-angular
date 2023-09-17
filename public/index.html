@@ -85,28 +85,30 @@
                 </div>
         
                 <div class="text-box">
-                    <h1>Alerts</h1>
-                    <p>
-                        What if your clothing budget ended? You will get an alert. The goal is to never go over the budget.
-                    </p>
-                </div>
-            </section>
-    
-            <section>
-                <div class="text-box">
                     <h1>Results</h1>
                     <p>
                         People who stick to a financial plan, budgeting every expense, get out of debt faster!
                         Also, they to live happier lives... since they expend without guilt or fear... 
                         because they know it is all good and accounted for.
                     </p>
+                    
                 </div>
-        
-                <div class="text-box">
-                    <h1>Chart</h1>
-                    <p>
-                        <canvas id="myChart" width="400" height="400"></canvas>
-                    </p>
+            </section>
+    
+            <section>
+                <div class="chart-container">
+                    <div class="chart">
+                        <h1>First Chart</h1>
+                        <p>
+                            <canvas id="firstChart" width="450" height="400"></canvas>
+                        </p>
+                    </div>
+                    <div class="chart">
+                        <h1>Second Chart</h1>
+                        <p>
+                            <div id="secondChart" width="500" height="500"></div>
+                        </p>
+                    </div>
                 </div>
             </section>
             </div>
@@ -141,7 +143,7 @@
         };
     
         function createChart() {
-            var ctx = document.getElementById("myChart").getContext("2d");
+            var ctx = document.getElementById("firstChart").getContext("2d");
             var myPieChart = new Chart(ctx, {
                 type: 'pie',
                 data: dataSource
@@ -160,7 +162,97 @@
             });
         }
         getBudget();
-    </script>    
+    </script>
+
+<script src="https://d3js.org/d3.v7.min.js"></script>
+<script>
+        // Function to create the second doughnut chart
+        function createSecondChart(data) {
+        const width = 700;
+        const height = 500;
+        const radius = Math.min(width, height) / 2;
+
+        const svg = d3.select("#secondChart")
+            .append("svg")
+            .attr("width", width)
+            .attr("height", height)
+            .append("g")
+            .attr("transform", `translate(${width / 2},${height / 2})`);
+
+        const color = d3.scaleOrdinal()
+            .domain(data.map(d => d.title))
+            .range(["#98abc5", "#8a89a6", "#7b6888", "#6b486b", "#a05d56", "#d0743c", "#ff8c00"]);
+
+        const pie = d3.pie()
+            .sort(null)
+            .value(d => d.budget);
+
+        const arc = d3.arc()
+            .outerRadius(radius * 0.8)
+            .innerRadius(radius * 0.4);
+
+        const outerArc = d3.arc()
+            .innerRadius(radius * 0.9)
+            .outerRadius(radius * 0.9);
+
+        const arcs = svg.selectAll(".arc")
+            .data(pie(data))
+            .enter()
+            .append("g")
+            .attr("class", "arc");
+
+        arcs.append("path")
+            .attr("d", arc)
+            .style("fill", d => color(d.data.title))
+            .attr("class", "slice");
+
+        const text = svg.selectAll(".labels")
+            .data(pie(data))
+            .enter()
+            .append("text")
+            .attr("dy", ".35em")
+            .text(function (d) {
+                return d.data.title;
+            });
+
+        function midAngle(d) {
+            return d.startAngle + (d.endAngle - d.startAngle) / 2;
+        }
+
+        text.transition().duration(1000)
+            .attr("transform", function (d) {
+                var pos = outerArc.centroid(d);
+                pos[0] = radius * 1.002 * (midAngle(d) < Math.PI ? 1 : -1);
+                return "translate(" + pos + ")";
+            })
+            .style("text-anchor", function (d) {
+                return midAngle(d) < Math.PI ? "start" : "end";
+            });
+
+        const polyline = svg.selectAll(".lines")
+            .data(pie(data))
+            .enter()
+            .append("polyline");
+
+        polyline.transition().duration(1000)
+            .attr("points", function (d) {
+                var pos = outerArc.centroid(d);
+                pos[0] = radius * 1 * (midAngle(d) < Math.PI ? 1 : -1);
+                return [arc.centroid(d), outerArc.centroid(d), pos];
+            });
+    }
+
+    // Function to fetch data from budget-data.json and create the second chart
+    function getSecondBudget() {
+        d3.json('/budget-data')
+            .then(function (data) {
+                createSecondChart(data.myBudget);
+            });
+    }
+
+    // Call the function to create the second chart
+    getSecondBudget();
+</script>
 
 </body>
 </html>

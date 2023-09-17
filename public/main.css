@@ -5,6 +5,25 @@
 body {
     font-size: 10px;
     font-family: Tahoma, Arial;
+    /* width: 960px;
+    height: 500px;
+    position: relative; */
+}
+
+svg {
+	width: 100%;
+	height: 100%;
+}
+
+path.slice{
+	stroke-width:2px;
+}
+
+polyline{
+	opacity: .3;
+	stroke: black;
+	stroke-width: 2px;
+	fill: none;
 }
 
 div.menu {
@@ -69,7 +88,7 @@ div.hero h2 {
 }
 
 .page-area {
-    max-width: 768px;
+    width: 100%;
     display: inline-block;
 }
 
@@ -86,10 +105,26 @@ div.hero h2 {
 .container div.text-box {
     display: inline-block;
     width: 100%;
-    max-width: 340px;
+    width: 640px;
     text-align: justify;
     margin: 20px;
 }
+
+.container div.chart{
+    display:contents;
+    width: 100%;
+    width: 640px;
+    text-align: justify;
+    margin: 20px;
+}
+
+.chart-container {
+            display: flex;
+        }
+        .chart {
+            flex: 1;
+            padding: 10px;
+        }
 
 @media screen and (min-width: 768px) {
     .container .div.text-box {
