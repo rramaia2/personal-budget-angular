@@ -7,28 +7,31 @@ app.use('/', express.static('public'));
 
 const budgetData = JSON.parse(fs.readFileSync('budget-data.json', 'utf8'));
 
-// const budget = {
-//     myBudget:[
-//     {
-//         title: 'Eat Out',
-//         budget: 25
-//     },
-//     {
-//         title: 'Rent',
-//         budget: 375
-//     },
-//     {
-//         title: 'Grocery',
-//         budget: 110
-//     },
-// ]
-// };
+const budget = {
+    myBudget:[
+    {
+        title: 'Eat Out',
+        budget: 25
+    },
+    {
+        title: 'Rent',
+        budget: 375
+    },
+    {
+        title: 'Grocery',
+        budget: 110
+    },
+]
+};
 
 app.get('/hello', (req, res) => {
     res.send('Hello World!');
 });
 
 app.get('/budget', (req, res) => {
+    res.json(budget);
+});
+app.get('/budget-data', (req, res) => { // Change the route to /budget-data
     res.json(budgetData);
 });
 
