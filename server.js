@@ -7,46 +7,8 @@ app.use('/', express.static('public'));
 
 const budgetData = JSON.parse(fs.readFileSync('budget-data.json', 'utf8'));
 
-const budget = {
-    myBudget:[
-    {
-        title: 'Eat Out',
-        budget: 25
-    },
-    {
-        title: 'Rent',
-        budget: 375
-    },
-    {
-        title: 'Grocery',
-        budget: 110
-    },
-    {
-        "title": "Electricity Bill",
-        "budget": 50
-    },
-    {
-        "title": "Gas Bill",
-        "budget": 45
-    },
-    {
-        "title": "Phone Bill",
-        "budget": 45
-    },
-    {
-        "title": "Utilities",
-        "budget": 30
-    },
-    {
-        "title": "Health Care",
-        "budget": 70
-    },
-    {
-        "title": "Miscellaneous",
-        "budget": 40
-    }
-]
-};
+const budget =JSON.parse(fs.readFileSync('budget-data.json', 'utf8'));
+
 
 app.get('/hello', (req, res) => {
     res.send('Hello World!');
