@@ -2,11 +2,14 @@
 
 .breadcrumbs {
     font-size: 14px;
-    background-color: #f0f0f0;
+    background-color: #6b75ae;
     padding: 10px;
     border-radius: 4px;
     margin-bottom: 20px;
-  }
+    transform: translate(0, 2px);
+    perspective: 1000px;
+    box-shadow: 0 6px 4px rgba(110, 120, 183, 0.885);
+  }  
   
   .breadcrumbs span {
     margin: 0 5px;
@@ -14,7 +17,7 @@
   
   .breadcrumbs a {
     text-decoration: none;
-    color: #007bff;
+    color: #fff;
     font-weight: bold;
   }
   
